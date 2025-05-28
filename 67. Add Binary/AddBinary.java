@@ -6,21 +6,17 @@ class Solution {
         int aLen = a.length() - 1;
         int bLen = b.length() - 1;
 
-        while( aLen >= 0 || bLen >= 0 || carry ==1 ){
-            if (aLen >= 0){
-                carry += a.charAt(aLen) - '0';
-                aLen --;
-            } 
-
-            if (bLen >= 0) {
-                carry += b.charAt(bLen) - '0';
-                bLen --;
+        while (aLen >= 0 || bLen >= 0 || carry == 1) {
+            if (aLen >= 0) {
+                carry += a.charAt(aLen--) - '0';
             }
-
-            output.insert(0, carry % 2);
+            if (bLen >= 0) {
+                carry += b.charAt(bLen--) - '0';
+            }
+            output.append(carry % 2);
             carry /= 2;
         }
 
-        return output.toString();
+        return output.reverse().toString();
     }
 }
