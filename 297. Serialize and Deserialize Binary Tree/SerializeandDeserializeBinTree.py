@@ -5,32 +5,28 @@
 #         self.left = None
 #         self.right = None
 
+
 class Codec:
-    def serialize(self, root):
-        def preorder(node):
-            if not node:
-                vals.append("#")
-            else:
-                vals.append(str(node.val))
-                preorder(node.left)
-                preorder(node.right)
-        
-        vals = []
-        preorder(root)
-        return ",".join(vals)
+    def serialize(self, root: Optional[TreeNode]) -> str:
+        if not root:
+            return "null"
+        return f"{root.val},{self.serialize(root.left)},{self.serialize(root.right)}"
     
-    def deserialize(self, data):
-        def build():
-            val = next(vals)
-            if val == "#":
-                return None
-            node = TreeNode(int(val))
-            node.left = build()
-            node.right = build()
-            return node
+    def deserialize(self, data: str) -> Optional[TreeNode]:
+        if not data:
+            return None
+        nodes = deque(data.split(","))
+        return self.helper(nodes)
+    
+    def helper(self, nodes: deque) -> Optional[TreeNode]:
+        val = nodes.popleft()
+        if val == "null":
+            return None
+        node = TreeNode(int(val))
+        node.left = self.helper(nodes)
+        node.right = self.helper(nodes)
+        return node
         
-        vals = iter(data.split(","))
-        return build()
 
 # Your Codec object will be instantiated and called as such:
 # ser = Codec()
